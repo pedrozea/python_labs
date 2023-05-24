@@ -10,26 +10,58 @@
 # User arrays, inventarios, tuplas. Condicionales, reocrridos, for o while.
 
 #INGRESO AL SERVICIO
-
 print("---------------------------\nHola! Bienvenido a la cafetería de Alejo.\n---------------------------")
-
 nombre = input("Como te llamas?\n")
 
-menuStock = ["Café", "Té", "Agua", "Cola", "Refresco", "Jugo"]
+#DEFINICION DE PRODUCTOS Y MENU
+menuStock = {
+    "Cafe": {
+        "Unidades":50,
+        "Precio" : 1.5
+    },
+    "Te":{
+        "Unidades":30,
+        "Precio" : 2.2
+        },  
+    "Agua":{
+        "Unidades":50,
+        "Precio" : 1
+        },  
+    "Jugo":{
+        "Unidades":45,
+        "Precio" : 3
+        },
+    "Soda":{
+    "Unidades":36,
+    "Precio" : 4
+    }
+    }
 
-menu = "Café, Té y Agua"
+#TOMA DE ORDEN
+menuCliente = "\n -".join(menuStock)
+precioTotal = 0
 
-orden = input("Hola " + nombre + "! Que deseas ordenar de nuestro menú?\n" + menu + "\n")
+barAbierto=True
+while barAbierto == True:
+    orden = input("Hola " + nombre + "! Que deseas ordenar de nuestro menú?\n -" + menuCliente+ "\n")
+    print(f"El precio unitario de {orden} es {menuStock[orden]['Precio']} USD")
+    unidades = int(input("Cuantas unidades deseas?\n"))
 
-precio = 10
+    #CALCULO DE PRECIOS
+    precioTotal += (menuStock[orden]["Precio"]) * unidades
 
-unidades = int(input("Cuantas unidades deseas?\n"))
+    #EVALUACION DE UNIDADES
+    if unidades > (menuStock[orden]["Unidades"]):
+        print(f"Lo sentimos, pero solo tenemos {menuStock[orden]['Unidades']} unidades disponibles de {orden}")
+    else:
+    #RESULTADO EN PANTALLA
+        menuStock[orden]["Unidades"] -= unidades 
+        print(nombre, ", el valor total de tu orden es $", precioTotal, "USD")
+        print("Tu " + orden + " estará lista en un momento!")
+        print(f"Quedan {menuStock[orden]['Unidades']} unidades de {orden}")
 
-maxUnidades = 50
+    continuar = input(f"¿Deseas agregar mas productos a tu orden?\nsi\nno\n")
+    if continuar == "no":
+        barAbierto = False
 
-if unidades > maxUnidades:
-    print("Lo sentimos, pero solo tenemos " + str(maxUnidades) + " unidades disponibles de " + orden)
-else:
-    valorTotal = unidades*precio
-    print("El valor total de tu orden es $", valorTotal, "USD")
-    print(nombre + " tu " + orden + " estará en un momento")
+print(f"Aqui está el resumen de tu orden:\n Productos: {orden} \n Cantidad: {unidades} \n Precio Total: {precioTotal} USD")
